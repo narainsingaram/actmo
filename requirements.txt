@@ -1,0 +1,6 @@
+Flask
+yfinance
+pandas_ta
+pandas
+numpy
+matplotlib
