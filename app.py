@@ -1,20 +1,50 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify # Added jsonify
 import yfinance as yf
 import ta
 import datetime
-from google import genai
-import markdown  # <-- Make sure to install: pip install markdown
+from google import genai # Assuming this is google.ai.generativelanguage or similar
+import markdown
 
 app = Flask(__name__)
 
 # Replace with your actual API key
-GEMINI_API_KEY = "AIzaSyCvjrlF-nctXVwZAwzBCYj2gryjT-VxYAI"
+GEMINI_API_KEY = "AIzaSyCvjrlF-nctXVwZAwzBCYj2gryjT-VxYAI" # Keep your actual key secure
+
+# New route to fetch current stock price
+@app.route('/get_current_price/<symbol_ticker>')
+def get_current_price(symbol_ticker):
+    try:
+        stock = yf.Ticker(symbol_ticker.upper())
+        # Attempt to get recent historical data for the last closing price
+        data = stock.history(period="2d") # Fetch last two days to get the most recent close
+
+        if not data.empty:
+            current_price = data['Close'].iloc[-1]
+        else:
+            # Fallback to stock.info if history is empty (e.g., for some specific symbols or circumstances)
+            stock_info = stock.info
+            current_price = stock_info.get('currentPrice') or \
+                            stock_info.get('regularMarketPrice') or \
+                            stock_info.get('open') or \
+                            stock_info.get('previousClose') # Add more fallbacks if needed
+
+        if current_price is None:
+            return jsonify({"error": f"Could not determine current price for {symbol_ticker}"}), 404
+
+        return jsonify({"symbol": symbol_ticker, "currentPrice": float(current_price)})
+    except Exception as e:
+        # yfinance can sometimes fail to fetch data for various reasons (invalid symbol, network issues, etc.)
+        print(f"Error fetching price for {symbol_ticker}: {e}") # Log error for debugging
+        return jsonify({"error": f"Error fetching price data for {symbol_ticker}. Please ensure the symbol is correct and try again."}), 500
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     analysis = None
     error = None
     ai_recommendation_html = None
+    # Retain form values for symbol, etc. for when the page reloads after chart display
+    form_data = request.form if request.method == 'POST' else {}
+
 
     if request.method == 'POST':
         try:
@@ -25,19 +55,17 @@ def index():
             option_type = request.form['type'].lower()
 
             end = datetime.datetime.today()
-            fetch_days = 150  # fixed 150 days window for indicators regardless of DTE
+            fetch_days = 150
             start = end - datetime.timedelta(days=fetch_days)
-            stock = yf.Ticker(symbol)
-            hist = stock.history(start=start.strftime('%Y-%m-%d'), end=end.strftime('%Y-%m-%d'))
+            stock_ticker_obj = yf.Ticker(symbol) # Renamed to avoid conflict
+            hist = stock_ticker_obj.history(start=start.strftime('%Y-%m-%d'), end=end.strftime('%Y-%m-%d'))
 
             if hist.empty or len(hist) < 3:
                 error = "Not enough data for analysis. Try a symbol with more history."
-                return render_template('index.html', error=error)
+                return render_template('index.html', error=error, request_form=request.form)
 
-            # Use the last 150 days of data always
             hist = hist.tail(150)
 
-            # Fixed indicator windows (no longer based on DTE)
             ema_short, ema_mid, ema_long = 21, 50, 100
             rsi_win = 14
             atr_win = 14
@@ -47,7 +75,6 @@ def index():
             sma_win = 21
 
             n = len(hist)
-            # Adjust windows if not enough data
             ema_short = min(ema_short, n)
             ema_mid   = min(ema_mid, n)
             ema_long  = min(ema_long, n)
@@ -58,22 +85,16 @@ def index():
             macd_sig  = min(macd_sig, n)
             sma_win   = min(sma_win, n)
 
-            # Calculate EMAs
             hist[f'EMA{ema_short}'] = ta.trend.EMAIndicator(hist['Close'], window=ema_short).ema_indicator()
             hist[f'EMA{ema_mid}']   = ta.trend.EMAIndicator(hist['Close'], window=ema_mid).ema_indicator()
             hist[f'EMA{ema_long}']  = ta.trend.EMAIndicator(hist['Close'], window=ema_long).ema_indicator()
-
-            # Calculate SMA
             hist[f'SMA{sma_win}'] = ta.trend.SMAIndicator(hist['Close'], window=sma_win).sma_indicator()
-
-            # Calculate other indicators
             hist['RSI'] = ta.momentum.RSIIndicator(hist['Close'], window=rsi_win).rsi()
             hist['ATR'] = ta.volatility.AverageTrueRange(hist['High'], hist['Low'], hist['Close'], window=atr_win).average_true_range()
             macd = ta.trend.MACD(hist['Close'], window_slow=macd_slow, window_fast=macd_fast, window_sign=macd_sig)
             hist['MACD'] = macd.macd()
             hist['MACD_signal'] = macd.macd_signal()
 
-            # Define required columns including SMA
             required_cols = [
                 f'EMA{ema_short}', f'EMA{ema_mid}', f'EMA{ema_long}', f'SMA{sma_win}',
                 'RSI', 'ATR', 'MACD', 'MACD_signal'
@@ -81,9 +102,9 @@ def index():
             valid_hist = hist.dropna(subset=required_cols)
             if valid_hist.empty:
                 error = "Not enough data to compute indicators. Try a different symbol or wait for more data."
-                return render_template('index.html', error=error)
+                return render_template('index.html', error=error, request_form=request.form)
+            
             last_row = valid_hist.iloc[-1]
-
             current_price = last_row['Close']
             rsi = last_row['RSI']
             ema1 = last_row[f'EMA{ema_short}']
@@ -96,15 +117,12 @@ def index():
 
             break_even = strike + premium if option_type == 'call' else strike - premium
             distance_to_breakeven = abs(current_price - break_even)
-
-            # Calculate sentiment scores based on indicators
             trend_score = 1 if ema1 > ema2 > ema3 else -1
             momentum_score = 1 if rsi > 55 else (-1 if rsi < 45 else 0)
             macd_score = 1 if macd_val > macd_signal_val else -1
-            volatility_score = -1 if atr / current_price > 0.05 else 1  # High volatility = less favorable
+            volatility_score = -1 if atr / current_price > 0.05 else 1
             total_score = trend_score + momentum_score + macd_score + volatility_score
 
-            # Compose a detailed summary for the AI
             summary = f"""
 You are a bold and tactical stock trading assistant. Your job is to give decisive and actionable advice based on technical indicators.
 You can highlight risks, but avoid generic phrases like 'avoid for now' unless there's truly no opportunity. VERY BOLD, DECISIVE, and ACTIONABLE advice.
@@ -148,31 +166,34 @@ Return a markdown response with (BULLET POINT SECTIONS):
 
 Give an elaborated explanation that is extremely detailed and actionable. 
 
+Based on all the recent news and potential future news or things that could happen in the future about {symbol} (symbol) stock, give a good direction the user can take in terms of the trade
+and elucidate why. Access real-time news and previous sources and provide information from where they are from.
+
 MARKDOWN ALL IMPORANT INFORMATION. USE ITALICS, CODE BLOCKS, BOLD TEXT ETC. Space out make it readable. MOST IMPORTANTLY INCLUDED STYLED BULLETPOINTS!!!
 
 Should the user consider entering this trade now, wait for a better setup, or adjust parameters like strike or DTE?
 """
-
-            # Call Gemini AI for analysis
             try:
-                client = genai.Client(api_key=GEMINI_API_KEY)
-                response = client.models.generate_content(
-                    model="gemini-2.0-flash",
+                # Ensure your GEMINI_API_KEY is correctly configured for this client usage
+                client = genai.Client(api_key=GEMINI_API_KEY) 
+                response = client.models.generate_content( # Verify this client and method if issues arise
+                    model="gemini-2.0-flash", # Verify model name if issues arise
                     contents=summary
                 )
                 ai_recommendation = response.text
                 ai_recommendation_html = markdown.markdown(ai_recommendation)
             except Exception as ai_err:
-                ai_recommendation_html = f"<b>AI analysis failed:</b> {ai_err}"
+                print(f"AI analysis error: {ai_err}") # Log AI error
+                ai_recommendation_html = f"<p class='text-red-400'><b>AI analysis failed:</b> {ai_err}. Please check API key and model configuration.</p>"
 
-            # Prepare analysis for display
+
             analysis = [
                 f"Stock symbol: {symbol}",
                 f"Option type: {option_type}",
                 f"Strike price: {strike}",
                 f"Premium: {premium}",
                 f"Days to expiration: {dte}",
-                f"Current price: {current_price:.2f}",
+                f"Current price (at analysis): {current_price:.2f}", # Clarify this is price at analysis time
                 f"Breakeven price: {break_even:.2f} (distance: {distance_to_breakeven:.2f})",
                 f"EMA{ema_short}: {ema1:.2f}",
                 f"EMA{ema_mid}: {ema2:.2f}",
@@ -186,22 +207,23 @@ Should the user consider entering this trade now, wait for a better setup, or ad
 
             if dte < 7:
                 analysis.append("⚠️ Warning: Very short DTE. Technical indicators may be less reliable.")
-
+            
+            # Pass request.form to keep form populated
             return render_template('index.html',
                                    analysis=analysis,
                                    ai_recommendation_html=ai_recommendation_html,
-                                   symbol=symbol,
-                                   option_type=option_type,
-                                   strike=strike,
-                                   premium=premium,
-                                   dte=dte,
-                                   current_price=round(current_price, 2))
+                                   request_form=request.form, # Pass the whole form
+                                   current_price_at_analysis=round(current_price, 2)) # Distinguish this price
 
         except Exception as e:
             error = f"Error processing request: {str(e)}"
+            print(f"General error: {e}") # Log general error
+            # Pass request.form to keep form populated even on error
+            return render_template('index.html', error=error, request_form=request.form)
 
-    return render_template('index.html', error=error)
+    # For GET requests, or if POST fails before form processing
+    return render_template('index.html', error=error, request_form=form_data, ai_recommendation_html=ai_recommendation_html, analysis=analysis)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
-
