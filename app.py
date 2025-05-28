@@ -4,11 +4,16 @@ import ta
 import datetime
 from google import genai # Assuming this is google.ai.generativelanguage or similar
 import markdown
+from papertrade import paper_trading  # ✅ Import it here
 
 app = Flask(__name__)
 
+app.secret_key = 'dev_secret_key_123'
+
 # Replace with your actual API key
 GEMINI_API_KEY = "AIzaSyCvjrlF-nctXVwZAwzBCYj2gryjT-VxYAI" # Keep your actual key secure
+
+app.register_blueprint(paper_trading)
 
 # New route to fetch current stock price
 @app.route('/get_current_price/<symbol_ticker>')
@@ -224,6 +229,9 @@ Should the user consider entering this trade now, wait for a better setup, or ad
     # For GET requests, or if POST fails before form processing
     return render_template('index.html', error=error, request_form=form_data, ai_recommendation_html=ai_recommendation_html, analysis=analysis)
 
+@app.route('/info')
+def info():
+    return render_template('info.html')  # Renders about page
 
 if __name__ == '__main__':
     app.run(debug=True)
