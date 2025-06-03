@@ -5,6 +5,7 @@ import datetime
 from google import genai # Assuming this is google.ai.generativelanguage or similar
 import markdown
 from papertrade import paper_trading  # ✅ Import it here
+from register import register_bp       # your blueprint for auth (register/login)
 
 app = Flask(__name__)
 
@@ -14,6 +15,7 @@ app.secret_key = 'dev_secret_key_123'
 GEMINI_API_KEY = "AIzaSyCvjrlF-nctXVwZAwzBCYj2gryjT-VxYAI" # Keep your actual key secure
 
 app.register_blueprint(paper_trading)
+app.register_blueprint(register_bp)
 
 # New route to fetch current stock price
 @app.route('/get_current_price/<symbol_ticker>')
