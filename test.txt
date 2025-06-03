@@ -1,0 +1,1 @@
+mongodb+srv://narainsingaram:narain2007@idk.7pveyga.mongodb.net/?retryWrites=true&w=majority&appName=idk
