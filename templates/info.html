@@ -1,161 +1,583 @@
-<html>
-  <head>
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Manrope%3Awght%40400%3B500%3B700%3B800&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
-    />
-
-    <title>Stitch Design</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Trading Insights - Technical Analysis Education</title>
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
-
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  </head>
-  <body>
-    <div class="relative flex size-full min-h-screen flex-col bg-[#171f14] dark group/design-root overflow-x-hidden" style='font-family: Manrope, "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#2f402b] px-10 py-3">
-          <div class="flex items-center gap-4 text-white">
-            <div class="size-4">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"></path></svg>
-            </div>
-            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Trading Insights</h2>
-          </div>
-          <div class="flex flex-1 justify-end gap-8">
-            <div class="flex items-center gap-9">
-              <a class="text-white text-sm font-medium leading-normal" href="{{ url_for('index') }}">AI Analysis</a>
-              <a class="text-green-200 text-sm font-medium leading-normal text-bold" href="info.html">Info</a>
-              <a class="text-white text-sm font-medium leading-normal" href="#">Analysis</a>
-              <a class="text-white text-sm font-medium leading-normal" href="#">Community</a>
-            </div>
-            <button
-              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 bg-[#2f402b] text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
-            >
-              <div class="text-white" data-icon="Bell" data-size="20px" data-weight="regular">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                  <path
-                    d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"
-                  ></path>
-                </svg>
-              </div>
-            </button>
-            <div
-              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
-              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAxNu84-bhVa2rIh-eFam-678wX09T36ZBHFXw_AW9j7Smqg05DDTkOmb9G5dARg0Us8-RQFqn-eeU96dReWlmDjaK_QnpH2ipmNbDHO4MwfqLy-vFhcMJxdvhRBM1lYtVGN8nRAAg2ZhLthAgCgq05Q0JFbs8iqoUOwFQpAZcXwak-rpAlIeYuQjjftm0qvN8Upye1dQbiq0neD1dejx3LE367N35TnTkGIFG1YiR7GD0jOnosdQLKV-iqk3TVaNNRKraiYaI7OdY");'
-            ></div>
-          </div>
-        </header>
-        <div class="px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4">
-              <p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Technical Analysis Indicators</p>
-            </div>
-            <div class="p-4">
-              <div class="flex items-stretch justify-between gap-4 rounded-xl">
-                <div class="flex flex-col gap-1 flex-[2_2_0px]">
-                  <p class="text-white text-base font-bold leading-tight">Exponential Moving Average (EMA)</p>
-                  <p class="text-[#a4be9d] text-sm font-normal leading-normal">
-                    EMA gives more weight to recent prices, making it more responsive to new information than SMA. It's used to identify trends and potential support/resistance
-                    levels.
-                  </p>
-                </div>
-                <div
-                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBmTG8PVuaR3d9Q0fFajO942phZg-tmW_5RHRaY5zsctiPiVsq0rqOOoOTKP0PCTBf4LLjryecTfgTCtEfulYQaYBWe5pDEivvn6vdzRx_frBFmygGOgySz_kXR6fUky2hLw9CKqivgbJTsj77ihOB69ffiownlg4A7VYAmU4D7bnUCaSaWE0ZyXpUZ-tRp8XO68U7rI-qT5ns7hrp2ari1MKTDzBTBEqZVLUd03t26L5c2ExcUKiffGzByM4jGhTtb3PlspNoDOmA");'
-                ></div>
-              </div>
-            </div>
-            <div class="p-4">
-              <div class="flex items-stretch justify-between gap-4 rounded-xl">
-                <div class="flex flex-col gap-1 flex-[2_2_0px]">
-                  <p class="text-white text-base font-bold leading-tight">Simple Moving Average (SMA)</p>
-                  <p class="text-[#a4be9d] text-sm font-normal leading-normal">
-                    SMA calculates the average price over a specific period. It smooths out price data to identify the direction of a trend.
-                  </p>
-                </div>
-                <div
-                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB6Qz9YzZd_yU1_8E8oSgm3RQ6b60RNdwlu6jO276iFMyn71ML8-BJ0dLmNm4Q4QCeAuHNAzAcfgY_H4syF_6hCJQlLnA3zi1HaKODSxg0GW2BiSes3y1FkZK2T8UPZzZN6epZQJ0osaWDsB0jgU7MZjSs6NTjnwycQbR7nMIwcqxuMXmBztCV7-u_Z6QDR4WAaWjyNBohI_rr5YWeQdveST6mEWyEb0OflK6J4vaTrM9Kxzn3762XEqIPzlxgAcxl8G2o0NlCkRqs");'
-                ></div>
-              </div>
-            </div>
-            <div class="p-4">
-              <div class="flex items-stretch justify-between gap-4 rounded-xl">
-                <div class="flex flex-col gap-1 flex-[2_2_0px]">
-                  <p class="text-white text-base font-bold leading-tight">Relative Strength Index (RSI)</p>
-                  <p class="text-[#a4be9d] text-sm font-normal leading-normal">
-                    RSI measures the speed and change of price movements to identify overbought or oversold conditions. Values above 70 suggest overbought, while below 30 suggest
-                    oversold.
-                  </p>
-                </div>
-                <div
-                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBaJDl1JPnx3h946iNp3bkGbLoxNmMgDtQwC2Mp00GNiLL5xrLp0sBuF51BCGj0RVOETNtgVtFXXMvSSERPq2cX3_6-RvLJVKTA7EQDC4SCWy15Qq38YlxIyE_yac9SlRwZXaLf8Q8WcfoXNOMdPY8DsyR2vIrqm-fr_2T4WAzVRs35bz9cxVsEpraa8RLToQfEO4pVFk1l0Ls7muB6M77qeZdfwXo0xT6xvmhDMcCcuecuWWCQMqvOEVrW6ytN4yLe27xRQnv3PcA");'
-                ></div>
-              </div>
-            </div>
-            <div class="p-4">
-              <div class="flex items-stretch justify-between gap-4 rounded-xl">
-                <div class="flex flex-col gap-1 flex-[2_2_0px]">
-                  <p class="text-white text-base font-bold leading-tight">Average True Range (ATR)</p>
-                  <p class="text-[#a4be9d] text-sm font-normal leading-normal">
-                    ATR measures market volatility by averaging the range between high and low prices over a period. Higher ATR indicates increased volatility.
-                  </p>
-                </div>
-                <div
-                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC_0pCxeAM5YRwRUuVJnvt89g3eEdeGLZ0vZ8NdVCkKJp3yPQT039XfxjvaTs01V1OPttW3VlFCT5nLNkvdNXmRbRdVLlzsmuqfrYs6KiUXinDktwWtyCOWAeLSYx5X0TgTMO1JxN7ZsysPqMhSHKDm4Fs1xbztf-KTjJLxTOAJSxpzzuZtoA4Gr6DJK5QvqJr8g_QDipml1G3Fr9AH4TnSrG-93aF_q8prIyh4xBAnoJ-coa6CgiN6xiAXZZRXklPxcdHTMQbsRB0");'
-                ></div>
-              </div>
-            </div>
-            <div class="p-4">
-              <div class="flex items-stretch justify-between gap-4 rounded-xl">
-                <div class="flex flex-col gap-1 flex-[2_2_0px]">
-                  <p class="text-white text-base font-bold leading-tight">Moving Average Convergence Divergence (MACD)</p>
-                  <p class="text-[#a4be9d] text-sm font-normal leading-normal">
-                    MACD shows the relationship between two EMAs. It's used to identify potential buy/sell signals when the MACD line crosses the signal line.
-                  </p>
-                </div>
-                <div
-                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBZ4uY1HqARXyl4JjW_QXw14PP7AVz8a5QknzDi__P-AmtgsSiVCvMXAYdM--qWvLH7YYKiRjkKsbn-dg7apBs77aDUK6dYR9ckIcBolEjOB-2vOr6pLBRAOHzwdSZoxMfr2cCEhc1B5RtUH6ujNSNQF_EesYrSB24DkrOzLRUy411vHbE5LuZS1UXy-pREfo0EQiWKsyib6zcPNbYx957IZMXTA9_j7drAfrXj17SjToW7nHrFZlQbP1YUTqNV1wQtk0ogHbYuHYg");'
-                ></div>
-              </div>
-            </div>
-            <div class="p-4">
-              <div class="flex items-stretch justify-between gap-4 rounded-xl">
-                <div class="flex flex-col gap-1 flex-[2_2_0px]">
-                  <p class="text-white text-base font-bold leading-tight">Signal Indicators</p>
-                  <p class="text-[#a4be9d] text-sm font-normal leading-normal">
-                    Signal indicators provide buy or sell signals based on various technical analysis methods. They help traders make informed decisions about entering or exiting
-                    trades.
-                  </p>
-                </div>
-                <div
-                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBMqMn1OImYMhTDfuPVtqlzN3XzeZkk8ig34QHtRQFSkGbt9ebxi3yAFIc26mjMKKN_l_GShkNC8NidbOp0yupS2l1SDfv2OZ2vVDziXY3Fwg4NLfOWCKFMWWgOy1fiUZLgDSg9LYwCFvnUlHeWtdanHvE9VRz4v8UxG6GPffQa33z1fFmCFB3IooQqSIn4qQgVv6_GKaPPNju1qr2EHSUGNuCYuiuL0fkEFFNxjUJRdfec0oXuJVGWXMqi-wRsfwj6dgX4h_GZvPw");'
-                ></div>
-              </div>
-            </div>
-            <div class="p-4">
-              <div class="flex items-stretch justify-between gap-4 rounded-xl">
-                <div class="flex flex-col gap-1 flex-[2_2_0px]">
-                  <p class="text-white text-base font-bold leading-tight">Volatility Indicators</p>
-                  <p class="text-[#a4be9d] text-sm font-normal leading-normal">
-                    Volatility indicators measure the degree of price fluctuation. They help traders understand market risk and adjust their trading strategies accordingly.
-                  </p>
-                </div>
-                <div
-                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB44z7Ql3kD0vYIzy3RRuHtKZkul_MjzkLVS_lAOupsSESPwyLmBj6bQDzcbgOuQGilRKdpGlqZhhyc8uvH3BHfdmjDeypdaHciWx-Sm8SmG8oUGg0WCf8GiegFxwiaj46N4o_mLwoceRRPVc9e6_f1S0h49xequM-T_BjWw4VQStdJPhMk9CQ4VZbgc_nstFH-PjAzWgJBygPOhQrt1skp0-UzPyv4pBUFImjfG2q-DlbTpjZybk9I8DFn_Wij2bRRzZ75fqHNPJU");'
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'trading': {
+                            'dark': '#0a0e1a',
+                            'darker': '#060a14',
+                            'card': '#111827',
+                            'border': '#1f2937',
+                            'accent': '#3b82f6',
+                            'success': '#10b981',
+                            'warning': '#f59e0b',
+                            'danger': '#ef4444',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-in-out',
+                        'slide-up': 'slideUp 0.4s ease-out',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(30px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+        
+        .gradient-border {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            padding: 1px;
+            border-radius: 16px;
+        }
+        
+        .gradient-border-content {
+            background: #111827;
+            border-radius: 15px;
+            padding: 2rem;
+        }
+        
+        .indicator-card {
+            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+            border: 1px solid #374151;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .indicator-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .indicator-card:hover::before {
+            left: 100%;
+        }
+        
+        .indicator-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .category-tab {
+            transition: all 0.3s ease;
+        }
+        
+        .category-tab.active {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+        
+        .category-tab:not(.active):hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            height: 4px;
+            border-radius: 2px;
+        }
+        
+        .difficulty-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+        
+        .difficulty-beginner { background: #10b981; color: white; }
+        .difficulty-intermediate { background: #f59e0b; color: white; }
+        .difficulty-advanced { background: #ef4444; color: white; }
+    </style>
+</head>
+<body class="font-inter bg-trading-dark text-white">
+    <!-- Background Pattern -->
+    <div class="fixed inset-0 bg-gradient-to-br from-trading-dark via-trading-darker to-trading-dark">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%233b82f6" fill-opacity="0.02"%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
     </div>
-  </body>
+
+    <div class="relative z-10 min-h-screen">
+        <!-- Header -->
+        <header class="fixed top-0 w-full z-50 glass-effect border-b border-trading-border">
+            <div class="max-w-7xl mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <!-- Logo -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-trading-accent to-blue-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Trading Insights</h1>
+                            <p class="text-xs text-gray-400">Technical Analysis Hub</p>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <nav class="hidden md:flex items-center space-x-8">
+                        <a href="{{ url_for('index') }}" class="text-gray-300 hover:text-white transition-colors">AI Analysis</a>
+                        <a href="info.html" class="text-trading-accent font-medium">Education</a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">Analysis</a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">Community</a>
+                    </nav>
+
+                    <!-- User Actions -->
+                    <div class="flex items-center space-x-4">
+                        <button class="p-2 rounded-lg bg-trading-card hover:bg-gray-700 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                            </svg>
+                        </button>
+                        <div class="w-8 h-8 bg-gradient-to-br from-trading-accent to-blue-600 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="pt-24 pb-12">
+            <div class="max-w-7xl mx-auto px-6">
+                <!-- Hero Section -->
+                <div class="text-center mb-16 animate-fade-in">
+                    <div class="inline-flex items-center space-x-2 bg-trading-card px-4 py-2 rounded-full mb-6">
+                        <div class="w-2 h-2 bg-trading-success rounded-full animate-pulse"></div>
+                        <span class="text-sm text-gray-300">Learn • Practice • Master</span>
+                    </div>
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+                        Technical Analysis
+                        <span class="block text-trading-accent">Mastery Center</span>
+                    </h1>
+                    <p class="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
+                        Master the art of technical analysis with our comprehensive guide to indicators, patterns, and trading strategies. 
+                        From beginner concepts to advanced techniques.
+                    </p>
+                    
+                    <!-- Progress Overview -->
+                    <div class="max-w-2xl mx-auto bg-trading-card rounded-2xl p-6 border border-trading-border">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-sm font-medium text-gray-300">Learning Progress</span>
+                            <span class="text-sm font-bold text-trading-accent">7/12 Indicators</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="progress-bar w-3/5 h-2 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Tabs -->
+                <div class="flex flex-wrap justify-center gap-4 mb-12">
+                    <button class="category-tab active px-6 py-3 rounded-full font-medium transition-all" onclick="showCategory('all')">
+                        All Indicators
+                    </button>
+                    <button class="category-tab px-6 py-3 rounded-full font-medium transition-all" onclick="showCategory('trend')">
+                        Trend Analysis
+                    </button>
+                    <button class="category-tab px-6 py-3 rounded-full font-medium transition-all" onclick="showCategory('momentum')">
+                        Momentum
+                    </button>
+                    <button class="category-tab px-6 py-3 rounded-full font-medium transition-all" onclick="showCategory('volatility')">
+                        Volatility
+                    </button>
+                    <button class="category-tab px-6 py-3 rounded-full font-medium transition-all" onclick="showCategory('volume')">
+                        Volume
+                    </button>
+                </div>
+
+                <!-- Indicators Grid -->
+                <div class="grid lg:grid-cols-2 gap-8 mb-16">
+                    <!-- EMA Card -->
+                    <div class="indicator-card rounded-2xl p-8 animate-slide-up" data-category="trend">
+                        <div class="flex items-start justify-between mb-6">
+                            <div>
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <h3 class="text-2xl font-bold text-white">Exponential Moving Average</h3>
+                                    <span class="difficulty-badge difficulty-beginner">Beginner</span>
+                                </div>
+                                <p class="text-trading-accent font-medium">EMA</p>
+                            </div>
+                            <div class="w-12 h-12 bg-gradient-to-br from-trading-success to-green-600 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M3 17l6-6 4 4 8-8"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmTG8PVuaR3d9Q0fFajO942phZg-tmW_5RHRaY5zsctiPiVsq0rqOOoOTKP0PCTBf4LLjryecTfgTCtEfulYQaYBWe5pDEivvn6vdzRx_frBFmygGOgySz_kXR6fUky2hLw9CKqivgbJTsj77ihOB69ffiownlg4A7VYAmU4D7bnUCaSaWE0ZyXpUZ-tRp8XO68U7rI-qT5ns7hrp2ari1MKTDzBTBEqZVLUd03t26L5c2ExcUKiffGzByM4jGhTtb3PlspNoDOmA" alt="EMA Chart" class="w-full h-48 object-cover rounded-xl">
+                        </div>
+                        
+                        <p class="text-gray-300 mb-6 leading-relaxed">
+                            EMA gives more weight to recent prices, making it more responsive to new information than SMA. 
+                            It's particularly useful for identifying trend changes early and setting dynamic support/resistance levels.
+                        </p>
+                        
+                        <div class="space-y-4 mb-6">
+                            <div class="bg-trading-darker rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Key Applications:</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Trend direction identification</li>
+                                    <li>• Dynamic support and resistance</li>
+                                    <li>• Entry and exit signal generation</li>
+                                    <li>• Crossover strategies with multiple EMAs</li>
+                                </ul>
+                            </div>
+                            <div class="bg-trading-darker rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Best Timeframes:</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-trading-accent text-white text-xs rounded-full">15m</span>
+                                    <span class="px-3 py-1 bg-trading-accent text-white text-xs rounded-full">1H</span>
+                                    <span class="px-3 py-1 bg-trading-accent text-white text-xs rounded-full">4H</span>
+                                    <span class="px-3 py-1 bg-trading-accent text-white text-xs rounded-full">1D</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-gradient-to-r from-trading-accent to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all">
+                            Learn More About EMA
+                        </button>
+                    </div>
+
+                    <!-- RSI Card -->
+                    <div class="indicator-card rounded-2xl p-8 animate-slide-up" data-category="momentum">
+                        <div class="flex items-start justify-between mb-6">
+                            <div>
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <h3 class="text-2xl font-bold text-white">Relative Strength Index</h3>
+                                    <span class="difficulty-badge difficulty-beginner">Beginner</span>
+                                </div>
+                                <p class="text-trading-accent font-medium">RSI</p>
+                            </div>
+                            <div class="w-12 h-12 bg-gradient-to-br from-trading-warning to-yellow-600 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaJDl1JPnx3h946iNp3bkGbLoxNmMgDtQwC2Mp00GNiLL5xrLp0sBuF51BCGj0RVOETNtgVtFXXMvSSERPq2cX3_6-RvLJVKTA7EQDC4SCWy15Qq38YlxIyE_yac9SlRwZXaLf8Q8WcfoXNOMdPY8DsyR2vIrqm-fr_2T4WAzVRs35bz9cxVsEpraa8RLToQfEO4pVFk1l0Ls7muB6M77qeZdfwXo0xT6xvmhDMcCcuecuWWCQMqvOEVrW6ytN4yLe27xRQnv3PcA" alt="RSI Chart" class="w-full h-48 object-cover rounded-xl">
+                        </div>
+                        
+                        <p class="text-gray-300 mb-6 leading-relaxed">
+                            RSI measures the speed and change of price movements to identify overbought or oversold conditions. 
+                            Values above 70 suggest overbought conditions, while below 30 suggest oversold conditions.
+                        </p>
+                        
+                        <div class="space-y-4 mb-6">
+                            <div class="bg-trading-darker rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Trading Signals:</h4>
+                                <div class="grid grid-cols-2 gap-4 text-sm">
+                                    <div class="text-red-400">
+                                        <strong>Overbought (>70)</strong>
+                                        <p class="text-gray-400">Consider selling</p>
+                                    </div>
+                                    <div class="text-green-400">
+                                        <strong>Oversold (<30)</strong>
+                                        <p class="text-gray-400">Consider buying</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-trading-darker rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Advanced Strategies:</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Divergence analysis</li>
+                                    <li>• Hidden divergence patterns</li>
+                                    <li>• RSI trendline breaks</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-gradient-to-r from-trading-accent to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all">
+                            Master RSI Trading
+                        </button>
+                    </div>
+
+                    <!-- MACD Card -->
+                    <div class="indicator-card rounded-2xl p-8 animate-slide-up" data-category="momentum">
+                        <div class="flex items-start justify-between mb-6">
+                            <div>
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <h3 class="text-2xl font-bold text-white">MACD</h3>
+                                    <span class="difficulty-badge difficulty-intermediate">Intermediate</span>
+                                </div>
+                                <p class="text-trading-accent font-medium">Moving Average Convergence Divergence</p>
+                            </div>
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ4uY1HqARXyl4JjW_QXw14PP7AVz8a5QknzDi__P-AmtgsSiVCvMXAYdM--qWvLH7YYKiRjkKsbn-dg7apBs77aDUK6dYR9ckIcBolEjOB-2vOr6pLBRAOHzwdSZoxMfr2cCEhc1B5RtUH6ujNSNQF_EesYrSB24DkrOzLRUy411vHbE5LuZS1UXy-pREfo0EQiWKsyib6zcPNbYx957IZMXTA9_j7drAfrXj17SjToW7nHrFZlQbP1YUTqNV1wQtk0ogHbYuHYg" alt="MACD Chart" class="w-full h-48 object-cover rounded-xl">
+                        </div>
+                        
+                        <p class="text-gray-300 mb-6 leading-relaxed">
+                            MACD shows the relationship between two EMAs and is used to identify potential buy/sell signals 
+                            when the MACD line crosses the signal line. It's excellent for trend confirmation and momentum analysis.
+                        </p>
+                        
+                        <div class="space-y-4 mb-6">
+                            <div class="bg-trading-darker rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Components:</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>MACD Line:</strong> 12-period EMA - 26-period EMA</li>
+                                    <li>• <strong>Signal Line:</strong> 9-period EMA of MACD line</li>
+                                    <li>• <strong>Histogram:</strong> MACD line - Signal line</li>
+                                </ul>
+                            </div>
+                            <div class="bg-trading-darker rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Trading Signals:</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Bullish crossover (MACD > Signal)</li>
+                                    <li>• Bearish crossover (MACD < Signal)</li>
+                                    <li>• Zero line crossovers</li>
+                                    <li>• Divergence patterns</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-gradient-to-r from-trading-accent to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all">
+                            Explore MACD Strategies
+                        </button>
+                    </div>
+
+                    <!-- ATR Card -->
+                    <div class="indicator-card rounded-2xl p-8 animate-slide-up" data-category="volatility">
+                        <div class="flex items-start justify-between mb-6">
+                            <div>
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <h3 class="text-2xl font-bold text-white">Average True Range</h3>
+                                    <span class="difficulty-badge difficulty-intermediate">Intermediate</span>
+                                </div>
+                                <p class="text-trading-accent font-medium">ATR</p>
+                            </div>
+                            <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-700 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_0pCxeAM5YRwRUuVJnvt89g3eEdeGLZ0vZ8NdVCkKJp3yPQT039XfxjvaTs01V1OPttW3VlFCT5nLNkvdNXmRbRdVLlzsmuqfrYs6KiUXinDktwWtyCOWAeLSYx5X0TgTMO1JxN7ZsysPqMhSHKDm4Fs1xbztf-KTjJLxTOAJSxpzzuZtoA4Gr6DJK5QvqJr8g_QDipml1G3Fr9AH4TnSrG-93aF_q8prIyh4xBAnoJ-coa6CgiN6xiAXZZRXklPxcdHTMQbsRB0" alt="ATR Chart" class="w-full h-48 object-cover rounded-xl">
+                        </div>
+                        
+                        <p class="text-gray-300 mb-6 leading-relaxed">
+                            ATR measures market volatility by averaging the range between high and low prices over a period. 
+                            Higher ATR indicates increased volatility, which is crucial for position sizing and stop-loss placement.
+                        </p>
+                        
+                        <div class="space-y-4 mb-6">
+                            <div class="bg-trading-darker rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Practical Applications:</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Position sizing based on volatility</li>
+                                    <li>• Stop-loss placement (1-2x ATR)</li>
+                                    <li>• Profit target setting</li>
+                                    <li>• Market condition assessment</li>
+                                </ul>
+                            </div>
+                            <div class="bg-trading-darker rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Volatility Levels:</h4>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-green-400">Low Volatility</span>
+                                        <span class="text-gray-400">ATR < 1% of price</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-yellow-400">Medium Volatility</span>
+                                        <span class="text-gray-400">ATR 1-3% of price</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-red-400">High Volatility</span>
+                                        <span class="text-gray-400">ATR > 3% of price</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-gradient-to-r from-trading-accent to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all">
+                            Learn ATR Applications
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Learning Path Section -->
+                <div class="gradient-border mb-16">
+                    <div class="gradient-border-content">
+                        <div class="text-center mb-12">
+                            <h2 class="text-3xl font-bold mb-4">Structured Learning Path</h2>
+                            <p class="text-gray-400 max-w-2xl mx-auto">
+                                Follow our carefully designed curriculum to master technical analysis step by step
+                            </p>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 gap-8">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-2xl font-bold text-white">1</span>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-2">Foundation</h3>
+                                <p class="text-gray-400 text-sm mb-4">Learn basic indicators like SMA, EMA, and RSI</p>
+                                <div class="text-xs text-green-400 font-medium">4 Indicators • 2 weeks</div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-2xl font-bold text-white">2</span>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-2">Intermediate</h3>
+                                <p class="text-gray-400 text-sm mb-4">Master MACD, Bollinger Bands, and Stochastic</p>
+                                <div class="text-xs text-yellow-400 font-medium">5 Indicators • 3 weeks</div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-2xl font-bold text-white">3</span>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-2">Advanced</h3>
+                                <p class="text-gray-400 text-sm mb-4">Complex strategies and custom indicators</p>
+                                <div class="text-xs text-red-400 font-medium">8 Strategies • 4 weeks</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Reference Section -->
+                <div class="bg-trading-card rounded-2xl p-8 border border-trading-border">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-trading-accent" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        Quick Reference Guide
+                    </h2>
+                    
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-trading-darker rounded-lg p-4">
+                            <h3 class="font-semibold text-trading-success mb-2">Trend Indicators</h3>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Moving Averages</li>
+                                <li>• MACD</li>
+                                <li>• ADX</li>
+                                <li>• Parabolic SAR</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-trading-darker rounded-lg p-4">
+                            <h3 class="font-semibold text-trading-warning mb-2">Momentum</h3>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• RSI</li>
+                                <li>• Stochastic</li>
+                                <li>• Williams %R</li>
+                                <li>• CCI</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-trading-darker rounded-lg p-4">
+                            <h3 class="font-semibold text-trading-danger mb-2">Volatility</h3>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• ATR</li>
+                                <li>• Bollinger Bands</li>
+                                <li>• VIX</li>
+                                <li>• Standard Deviation</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-trading-darker rounded-lg p-4">
+                            <h3 class="font-semibold text-trading-accent mb-2">Volume</h3>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Volume Profile</li>
+                                <li>• OBV</li>
+                                <li>• VWAP</li>
+                                <li>• A/D Line</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showCategory(category) {
+            // Update active tab
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show/hide cards based on category
+            document.querySelectorAll('.indicator-card').forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                    card.classList.add('animate-slide-up');
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.indicator-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
 </html>
