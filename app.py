@@ -6,8 +6,46 @@ from google import genai # Assuming this is google.ai.generativelanguage or simi
 import markdown
 from papertrade import paper_trading  # ✅ Import it here
 from register import register_bp       # your blueprint for auth (register/login)
+from rag_processor import (
+    load_faiss_index,
+    get_relevant_documents,
+    DEFAULT_FAISS_INDEX_PATH,
+    DEFAULT_EMBEDDING_MODEL
+)
+import os # For checking file existence
 
 app = Flask(__name__)
+
+# Initialize RAG components
+RAG_ENABLED = True
+FAISS_INDEX_PATH = DEFAULT_FAISS_INDEX_PATH
+EMBEDDING_MODEL_NAME = DEFAULT_EMBEDDING_MODEL
+
+vector_store = None
+if RAG_ENABLED:
+    try:
+        # Check if data.txt exists and is not empty, as it's needed for index creation.
+        if not os.path.exists('data.txt') or os.path.getsize('data.txt') == 0:
+            print("WARNING: data.txt is missing or empty. FAISS index creation will fail if the index doesn't already exist. RAG might be ineffective.")
+
+        print(f"Attempting to load FAISS index from: {FAISS_INDEX_PATH} using embedding model: {EMBEDDING_MODEL_NAME}")
+        # load_faiss_index from rag_processor.py is expected to handle:
+        # - Internally calling create_embeddings(EMBEDDING_MODEL_NAME).
+        # - Creating the FAISS index if it does not exist (requires data.txt).
+        # - Loading the index if it exists.
+        vector_store = load_faiss_index(index_path=FAISS_INDEX_PATH, embeddings_model=EMBEDDING_MODEL_NAME)
+
+        if vector_store is None:
+            print("CRITICAL: Failed to load or create FAISS vector store. This could be due to missing 'data.txt' or other issues during index creation/loading. RAG features will be disabled.")
+            RAG_ENABLED = False # Disable RAG if index is critical and failed to load/create
+        else:
+            print("FAISS vector store loaded successfully. RAG is active.")
+    except Exception as e:
+        print(f"CRITICAL: Error initializing RAG components: {e}")
+        print("RAG features will be disabled due to this initialization error.")
+        RAG_ENABLED = False # Disable RAG on any exception during setup
+else:
+    print("RAG is disabled by initial configuration (RAG_ENABLED=False).")
 
 app.secret_key = 'dev_secret_key_123'
 
@@ -130,7 +168,8 @@ def index():
             volatility_score = -1 if atr / current_price > 0.05 else 1
             total_score = trend_score + momentum_score + macd_score + volatility_score
 
-            summary = f"""
+            # Define the main body of the prompt (original summary content)
+            prompt_body = f"""
 You are a bold and tactical stock trading assistant. Your job is to give decisive and actionable advice based on technical indicators.
 You can highlight risks, but avoid generic phrases like 'avoid for now' unless there's truly no opportunity. VERY BOLD, DECISIVE, and ACTIONABLE advice.
 Suggest possible entry and exit zones, trend direction, and confidence level. Be concise, direct, and intelligent.
@@ -180,6 +219,53 @@ MARKDOWN ALL IMPORANT INFORMATION. USE ITALICS, CODE BLOCKS, BOLD TEXT ETC. Spac
 
 Should the user consider entering this trade now, wait for a better setup, or adjust parameters like strike or DTE?
 """
+
+            retrieved_context = ""
+            if RAG_ENABLED and vector_store:
+                try:
+                    # Construct a more detailed query for RAG
+                    rag_query = (
+                        f"Provide an analysis for a {option_type} option on {symbol} "
+                        f"with a strike price of {strike}, expiring in {dte} days. "
+                        f"The current stock price is {current_price:.2f}. "
+                        f"Consider aspects like market sentiment for {symbol}, relevant financial ratios, "
+                        f"and general options trading strategies for such a setup. "
+                        f"Also, any information on P/E ratio, D/E ratio, ROE, P/B ratio, or dividend yield for {symbol} would be useful."
+                    )
+                    print(f"Constructed RAG query: {rag_query}")
+
+                    # Retrieve relevant documents using the RAG system
+                    # The get_relevant_documents function uses the vector_store which has the embeddings model implicitly
+                    relevant_docs = get_relevant_documents(rag_query, vector_store, k=3) # k=3 for top 3 docs
+
+                    if relevant_docs:
+                        retrieved_context += "\n\n--- Relevant Information from Knowledge Base ---\n"
+                        for i, doc in enumerate(relevant_docs):
+                            retrieved_context += f"Context Document [{i+1}]:\n{doc.page_content}\n\n"
+                        retrieved_context += "--------------------------------------------\n\n"
+                        print(f"Retrieved {len(relevant_docs)} documents for the prompt using RAG.")
+                    else:
+                        print("No relevant documents found by RAG for this query.")
+                except Exception as rag_err:
+                    print(f"Error during RAG document retrieval: {rag_err}")
+                    retrieved_context = "\n\n[RAG system encountered an error and could not retrieve additional context.]\n\n"
+            elif not RAG_ENABLED:
+                print("RAG is disabled. Skipping document retrieval.")
+            elif vector_store is None: # Should be caught by RAG_ENABLED = False already, but as a safeguard
+                print("RAG vector store not available. Skipping document retrieval.")
+
+
+            # Combine RAG context (if any) with the main prompt body
+            # Instruct the LLM to use the provided context
+            summary = (
+                f"{retrieved_context}"
+                f"Please consider the 'Relevant Information from Knowledge Base' (if provided above) "
+                f"in addition to your general knowledge and the technical indicator data to formulate your response to the following request:\n\n"
+                f"{prompt_body}"
+            )
+
+            # This 'summary' variable (now containing RAG context + original prompt) will be used in the Gemini API call
+            # The existing Gemini API call logic should follow:
             try:
                 # Ensure your GEMINI_API_KEY is correctly configured for this client usage
                 client = genai.Client(api_key=GEMINI_API_KEY) 

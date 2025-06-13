@@ -4,3 +4,7 @@ pandas_ta
 pandas
 numpy
 matplotlib
+langchain
+faiss-cpu
+sentence-transformers
+google-generativeai
