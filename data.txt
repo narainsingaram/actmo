@@ -1,0 +1,27 @@
+## Understanding Market Sentiment
+
+Market sentiment refers to the overall attitude or tone of investors toward a particular security or the stock market as a whole. It's a key driver of market movements, often influencing prices regardless of underlying fundamentals in the short term. Positive sentiment can lead to buying pressure and price increases, while negative sentiment can trigger sell-offs. Technical indicators like the CBOE Volatility Index (VIX), put/call ratios, and advances/declines can help gauge market sentiment. For instance, a high VIX often signals fear and bearish sentiment, while a low VIX suggests complacency or bullishness.
+
+## Key Financial Ratios for Stock Analysis
+
+When evaluating a company's stock, several financial ratios provide crucial insights:
+
+1.  **Price-to-Earnings (P/E) Ratio**: This measures the company's current share price relative to its per-share earnings. A high P/E might suggest that a stock is overvalued, or that investors expect high growth rates in the future. It's best used to compare companies in the same industry.
+
+2.  **Debt-to-Equity (D/E) Ratio**: This ratio indicates the proportion of a company's financing that comes from debt versus equity. A high D/E ratio can mean higher risk, especially if interest rates rise or if the company faces a downturn.
+
+3.  **Return on Equity (ROE)**: ROE measures a company's profitability by revealing how much profit a company generates with the money shareholders have invested. A consistently high ROE can indicate a strong competitive advantage.
+
+4.  **Price-to-Book (P/B) Ratio**: This compares a company's market capitalization to its book value. A P/B ratio below 1 might indicate an undervalued stock. However, it's important to consider industry specifics, as some industries naturally have higher tangible assets than others.
+
+5.  **Dividend Yield**: For income-focused investors, dividend yield (annual dividend per share divided by the stock's current price) is critical. A stable or growing dividend yield can be attractive, but ensure the company's earnings can sustain the payouts.
+
+## Options Trading Basics: Calls and Puts
+
+Options are contracts that give the buyer the right, but not the obligation, to buy or sell an underlying asset at a specific price (strike price) on or before a certain date (expiration date).
+
+*   **Call Options**: A call option gives the holder the right to *buy* the underlying asset. Buyers of calls are typically bullish on the stock, expecting its price to rise above the strike price before expiration. Sellers (writers) of calls are typically bearish or neutral, collecting the premium as income.
+
+*   **Put Options**: A put option gives the holder the right to *sell* the underlying asset. Buyers of puts are typically bearish, expecting the stock price to fall below the strike price. Sellers of puts are typically bullish or neutral.
+
+Understanding the Greeks (Delta, Gamma, Theta, Vega) is essential for more advanced options trading, as they measure the sensitivity of an option's price to various factors.
