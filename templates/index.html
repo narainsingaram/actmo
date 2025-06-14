@@ -365,13 +365,28 @@
     </div>
 
     <!-- Scripts -->
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const symbolInput = document.getElementById('stockSymbolInput');
         const chartContainer = document.getElementById('stockChartContainer');
         const priceDisplayContainer = document.getElementById('currentPriceDisplay');
         let tradingViewWidget = null;
+
+        // Function to display the "no chart" message
+        function showNoChartMessage() {
+            chartContainer.innerHTML = `
+                <div class="chart-loading">
+                    <div class="text-center text-gray-500">
+                        <svg class="w-12 h-12 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                        </svg>
+                        <p class="font-medium">No chart loaded yet</p>
+                        <p class="text-sm mt-2">Enter a stock symbol to view its live chart.</p>
+                    </div>
+                </div>
+            `;
+        }
 
         async function fetchCurrentPrice(symbol) {
             try {
@@ -399,25 +414,28 @@
         }
 
         async function updateChartAndPrice(symbol) {
-            chartContainer.innerHTML = `
-                <div class="chart-loading">
-                    <div class="text-center">
-                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-trading-accent mx-auto mb-4"></div>
-                        <p>Loading chart data...</p>
-                    </div>
-                </div>
-            `;
-            
-            priceDisplayContainer.innerHTML = `
-                <div class="trading-card rounded-xl p-6">
-                    <div class="flex items-center text-gray-400">
-                        <div class="animate-pulse w-4 h-4 bg-gray-600 rounded-full mr-3"></div>
-                        <span>Fetching real-time price...</span>
-                    </div>
-                </div>
-            `;
+            // Clear previous price display immediately
+            priceDisplayContainer.innerHTML = ''; 
 
             if (symbol && symbol.trim() !== "") {
+                chartContainer.innerHTML = `
+                    <div class="chart-loading">
+                        <div class="text-center">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-trading-accent mx-auto mb-4"></div>
+                            <p>Loading chart data...</p>
+                        </div>
+                    </div>
+                `;
+                
+                priceDisplayContainer.innerHTML = `
+                    <div class="trading-card rounded-xl p-6">
+                        <div class="flex items-center text-gray-400">
+                            <div class="animate-pulse w-4 h-4 bg-gray-600 rounded-full mr-3"></div>
+                            <span>Fetching real-time price...</span>
+                        </div>
+                    </div>
+                `;
+
                 const upperSymbol = symbol.trim().toUpperCase();
 
                 // Fetch and display current price
@@ -457,7 +475,7 @@
                     return;
                 }
 
-                chartContainer.innerHTML = '';
+                chartContainer.innerHTML = ''; // Clear loading message before initializing widget
 
                 tradingViewWidget = new TradingView.widget({
                     "width": "100%",
@@ -498,36 +516,32 @@
                     }
                 });
             } else {
-                chartContainer.innerHTML = "";
+                // If symbol is empty, clear chart and price display, then show "no chart" message
+                if (tradingViewWidget) {
+                    tradingViewWidget = null; // Dispose of existing widget if any
+                }
+                showNoChartMessage();
                 priceDisplayContainer.innerHTML = "";
             }
         }
 
         if (symbolInput) {
             symbolInput.addEventListener('blur', function() {
-                if (this.value.trim() !== "") {
-                    updateChartAndPrice(this.value);
-                } else {
-                    chartContainer.innerHTML = "";
-                    priceDisplayContainer.innerHTML = "";
-                }
+                updateChartAndPrice(this.value);
             });
 
             symbolInput.addEventListener('keypress', function(event) {
                 if (event.key === 'Enter') {
                     event.preventDefault();
-                    if (this.value.trim() !== "") {
-                        updateChartAndPrice(this.value);
-                    } else {
-                        chartContainer.innerHTML = "";
-                        priceDisplayContainer.innerHTML = "";
-                    }
+                    updateChartAndPrice(this.value);
                 }
             });
 
-            // Load chart if symbol is already present on page load
+            // Initial load: if symbol is empty, show "no chart" message, otherwise load chart
             if (symbolInput.value && symbolInput.value.trim() !== '') {
                 updateChartAndPrice(symbolInput.value);
+            } else {
+                showNoChartMessage();
             }
         }
     });

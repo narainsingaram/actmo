@@ -50,7 +50,7 @@ else:
 app.secret_key = 'dev_secret_key_123'
 
 # Replace with your actual API key
-GEMINI_API_KEY = "AIzaSyCvjrlF-nctXVwZAwzBCYj2gryjT-VxYAI" # Keep your actual key secure
+GEMINI_API_KEY = "AIzaSyDG6eHDcAx8iayyfKW9HCOPpsbXIfrSVF0" # Keep your actual key secure
 
 app.register_blueprint(paper_trading)
 app.register_blueprint(register_bp)
@@ -270,7 +270,7 @@ Should the user consider entering this trade now, wait for a better setup, or ad
                 # Ensure your GEMINI_API_KEY is correctly configured for this client usage
                 client = genai.Client(api_key=GEMINI_API_KEY) 
                 response = client.models.generate_content( # Verify this client and method if issues arise
-                    model="gemini-2.0-flash", # Verify model name if issues arise
+                    model="gemini-2.0-flash-lite", # Verify model name if issues arise
                     contents=summary
                 )
                 ai_recommendation = response.text
