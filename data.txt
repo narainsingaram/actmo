@@ -1,27 +1,493 @@
-## Understanding Market Sentiment
+Expert Context for Options Trading Feedback AI (RAG Knowledge Base)
+This document provides a comprehensive and highly detailed knowledge base for an AI designed to offer sophisticated feedback on options trading strategies and specific contract selections. The objective is to imbue the AI with a deep understanding of options mechanics, market dynamics, risk management principles, and strategic nuances, enabling it to deliver actionable and expert-level insights.
 
-Market sentiment refers to the overall attitude or tone of investors toward a particular security or the stock market as a whole. It's a key driver of market movements, often influencing prices regardless of underlying fundamentals in the short term. Positive sentiment can lead to buying pressure and price increases, while negative sentiment can trigger sell-offs. Technical indicators like the CBOE Volatility Index (VIX), put/call ratios, and advances/declines can help gauge market sentiment. For instance, a high VIX often signals fear and bearish sentiment, while a low VIX suggests complacency or bullishness.
+1. Foundational Options Concepts & Terminology
+A robust understanding of core options terminology is paramount. The AI must recognize and interpret the following elements within any submitted contract details:
 
-## Key Financial Ratios for Stock Analysis
+Call Option: Grants the holder the right, but not the obligation, to buy the underlying asset at a specified price (strike) before or on a specified date (expiration). Bullish conviction.
 
-When evaluating a company's stock, several financial ratios provide crucial insights:
+Put Option: Grants the holder the right, but not the obligation, to sell the underlying asset at a specified price (strike) before or on a specified date (expiration). Bearish conviction.
 
-1.  **Price-to-Earnings (P/E) Ratio**: This measures the company's current share price relative to its per-share earnings. A high P/E might suggest that a stock is overvalued, or that investors expect high growth rates in the future. It's best used to compare companies in the same industry.
+Underlying Asset: The security (stock, ETF, index, commodity) on which the option contract is based.
 
-2.  **Debt-to-Equity (D/E) Ratio**: This ratio indicates the proportion of a company's financing that comes from debt versus equity. A high D/E ratio can mean higher risk, especially if interest rates rise or if the company faces a downturn.
+Strike Price: The predetermined price at which the underlying asset can be bought (call) or sold (put).
 
-3.  **Return on Equity (ROE)**: ROE measures a company's profitability by revealing how much profit a company generates with the money shareholders have invested. A consistently high ROE can indicate a strong competitive advantage.
+Expiration Date (Maturity): The date on which the option contract ceases to exist. Options can be weekly, monthly, or LEAPs (Long-term Equity AnticiPation Securities). Time decay is most pronounced as expiration approaches.
 
-4.  **Price-to-Book (P/B) Ratio**: This compares a company's market capitalization to its book value. A P/B ratio below 1 might indicate an undervalued stock. However, it's important to consider industry specifics, as some industries naturally have higher tangible assets than others.
+Premium: The price paid by the buyer to the seller for an option contract. Composed of intrinsic value and extrinsic value (time value + implied volatility).
 
-5.  **Dividend Yield**: For income-focused investors, dividend yield (annual dividend per share divided by the stock's current price) is critical. A stable or growing dividend yield can be attractive, but ensure the company's earnings can sustain the payouts.
+Intrinsic Value: The in-the-money (ITM) portion of an option's premium. For a call, it's (Underlying Price - Strike Price) if positive; otherwise, zero. For a put, it's (Strike Price - Underlying Price) if positive; otherwise, zero.
 
-## Options Trading Basics: Calls and Puts
+Extrinsic Value (Time Value): The portion of an option's premium beyond its intrinsic value. This value erodes over time (Theta decay) and is significantly influenced by implied volatility.
 
-Options are contracts that give the buyer the right, but not the obligation, to buy or sell an underlying asset at a specific price (strike price) on or before a certain date (expiration date).
+In-the-Money (ITM):
 
-*   **Call Options**: A call option gives the holder the right to *buy* the underlying asset. Buyers of calls are typically bullish on the stock, expecting its price to rise above the strike price before expiration. Sellers (writers) of calls are typically bearish or neutral, collecting the premium as income.
+Call: Underlying Price > Strike Price
 
-*   **Put Options**: A put option gives the holder the right to *sell* the underlying asset. Buyers of puts are typically bearish, expecting the stock price to fall below the strike price. Sellers of puts are typically bullish or neutral.
+Put: Underlying Price < Strike Price
 
-Understanding the Greeks (Delta, Gamma, Theta, Vega) is essential for more advanced options trading, as they measure the sensitivity of an option's price to various factors.
+At-the-Money (ATM): Underlying Price ≈ Strike Price. These options typically have the highest extrinsic value and gamma.
+
+Out-of-the-Money (OTM):
+
+Call: Underlying Price < Strike Price
+
+Put: Underlying Price > Strike Price
+
+These options have zero intrinsic value and consist purely of extrinsic value. Their probabilities of expiring ITM are lower.
+
+Open Interest: The total number of outstanding options contracts that have not yet been closed or exercised. High open interest can indicate liquidity and institutional participation.
+
+Volume: The number of contracts traded during a specific period. High volume indicates active trading.
+
+Bid-Ask Spread: The difference between the highest price a buyer is willing to pay (bid) and the lowest price a seller is willing to accept (ask). Wide spreads indicate illiquidity and higher transaction costs.
+
+2. Options Pricing & The "Greeks"
+The "Greeks" are critical risk measures that quantify the sensitivity of an option's price to various factors. An expert AI must analyze contract details in light of these sensitivities:
+
+Delta (Δ):
+
+Measures the rate of change of an option's price with respect to a $1 change in the underlying asset's price.
+
+Ranges from 0 to 1 for calls, and −1 to 0 for puts.
+
+Approximates the probability of an option expiring ITM.
+
+AI Feedback Focus:
+
+Assess the directional bias implied by the delta.
+
+For multi-leg strategies, evaluate the net delta of the position. A "delta-neutral" strategy aims for a net delta near zero.
+
+Consider how delta changes as the underlying moves (Gamma).
+
+Higher delta implies greater sensitivity to price movements, thus higher directional risk.
+
+Gamma (Γ):
+
+Measures the rate of change of an option's delta with respect to a $1 change in the underlying asset's price.
+
+Gamma is highest for ATM options and decreases as options move further ITM or OTM.
+
+Represents the curvature of the option's price function. High gamma positions require more frequent rebalancing to maintain delta neutrality.
+
+AI Feedback Focus:
+
+High gamma indicates significant sensitivity of delta to underlying price changes, implying increased risk in volatile markets (e.g., straddles, short ATM options).
+
+Low gamma implies more stable delta, suited for less active management.
+
+Consider the proximity to expiration: Gamma explodes as expiration nears for ATM options.
+
+Theta (Θ):
+
+Measures the rate of decay of an option's extrinsic value (premium) over time. Typically expressed as the amount of premium lost per day.
+
+Theta is negative for long options (option buyers lose value) and positive for short options (option sellers gain value).
+
+Theta decay accelerates as expiration approaches, especially for ATM and near-ATM options.
+
+AI Feedback Focus:
+
+Crucial for assessing the time horizon of the trade.
+
+For long options: high theta indicates significant time decay drag. Shorter-dated options have higher theta.
+
+For short options: high theta is desirable, indicating rapid premium erosion.
+
+Analyze the Theta/Delta ratio: a high negative Theta/Delta can indicate a strong losing proposition against minor directional moves.
+
+Vega (ν):
+
+Measures the sensitivity of an option's price to a 1 change in implied volatility.
+
+Long options have positive Vega (benefit from rising IV), while short options have negative Vega (suffer from rising IV).
+
+Vega is generally highest for longer-dated and ATM options.
+
+AI Feedback Focus:
+
+Crucial for strategies involving volatility assumptions (e.g., straddles, iron condors).
+
+Assess whether the chosen contract has a net positive or negative Vega exposure and how this aligns with the trader's volatility outlook.
+
+Identify situations where a trader might be "selling low IV" or "buying high IV," which are often disadvantageous.
+
+Rho (ρ):
+
+Measures the sensitivity of an option's price to a 1 change in interest rates.
+
+Generally less impactful than other Greeks for short-term equity options but becomes relevant for LEAPs or long-term bond options.
+
+AI Feedback Focus: Consider for very long-dated contracts or when interest rate changes are a primary market driver.
+
+3. Implied Volatility (IV) Analysis
+Implied Volatility (IV) is a forward-looking measure of the market's expectation of future price swings. It is perhaps the single most critical factor in options pricing beyond the underlying's price.
+
+IV Rank/Percentile: Compare current IV to historical IV levels over a specific period (e.g., 52-week high/low) to determine if IV is relatively high or low.
+
+High IV Rank/Percentile often suggests conditions favorable for selling premium (e.g., credit spreads, iron condors).
+
+Low IV Rank/Percentile often suggests conditions favorable for buying premium (e.g., debit spreads, long calls/puts, straddles).
+
+Volatility Skew/Smirk: The pattern of implied volatilities across different strike prices for the same expiration.
+
+Equity Skew: Typically, OTM puts have higher IV than OTM calls (a "skew" to the downside), reflecting demand for downside protection.
+
+Volatility Smirk: A more pronounced skew indicating higher IV for OTM puts, often seen in equities, reflecting "crashophobia."
+
+Volatility Surface: The 3D representation of implied volatility across both strike prices and expiration dates.
+
+AI Feedback Focus:
+
+Critique the implied volatility context: Is the trader buying expensive premium or selling cheap premium?
+
+Highlight discrepancies between the underlying's historical volatility and its current implied volatility.
+
+Warn about potential IV crush events (e.g., post-earnings, post-FDA announcements) for long premium positions.
+
+Advise on managing Vega risk based on IV expectations.
+
+4. Risk Management & Position Sizing
+Effective risk management is the cornerstone of sustainable options trading. The AI must assess the proposed trade's alignment with sound risk principles.
+
+Maximum Loss & Gain: Explicitly calculate and communicate the maximum potential loss and gain for the specific strategy.
+
+For defined-risk strategies (e.g., credit spreads), the max loss is known.
+
+For undefined-risk strategies (e.g., naked options), emphasize the theoretical unlimited risk.
+
+Risk-to-Reward Ratio: Evaluate the potential gain relative to the potential loss. Favor trades with a favorable ratio (e.g., 1:2 or better).
+
+Probability of Profit (POP): Estimate the statistical likelihood of the trade being profitable at expiration. This is often approximated by 1−(Delta of Short Strike) for credit spreads.
+
+Capital at Risk: Determine the percentage of total trading capital allocated to this single trade. Avoid over-concentration. General rule: no more than 1−2 of capital at risk per trade.
+
+Account Size & Margin Requirements: Advise on the suitability of the trade given the trader's account size and the margin required (especially for selling naked options or wide spreads).
+
+Stop-Loss Levels: For long options, recommend clear mental or hard stop-loss points based on the underlying's price or the option's premium. For credit spreads, define a clear "stop loss" based on the spread's value.
+
+Diversification: Reinforce the importance of diversifying across different underlyings, sectors, and trade types (directional, non-directional, volatility-focused).
+
+Trade Management Plan: Emphasize the necessity of a pre-defined plan for entering, managing (adjustments), and exiting the trade, regardless of whether it's winning or losing.
+
+5. Market Context & Macro Factors
+Options prices are highly sensitive to broader market movements and economic conditions.
+
+Underlying Asset's Sector/Industry: Analyze the specific industry dynamics, news, and trends affecting the underlying.
+
+Market Sentiment (Broad Indices): How are major indices (SPX, NDX, DJIA, RUT) performing? Is the market in a bullish, bearish, or consolidating phase?
+
+VIX Index (Volatility Index): The "fear gauge." High VIX often correlates with falling equity markets and rising implied volatility across options. Low VIX indicates complacency and lower IV.
+
+Economic Data Releases: Jobs reports, inflation data (CPI, PPI), GDP, interest rate decisions by central banks (FOMC). These can introduce significant volatility.
+
+Earnings Announcements: A major catalyst for significant price movement and IV crush. Traders often buy options before earnings for directional plays or sell options after earnings (IV crush) for premium capture.
+
+News & Geopolitical Events: Wars, pandemics, political instability, company-specific news (e.g., drug trial results, M&A rumors) can dramatically impact underlying prices and implied volatility.
+
+Technical Analysis Context: Where is the underlying relative to key support/resistance levels, moving averages, trendlines, and chart patterns? This provides a directional or non-directional bias.
+
+6. Options Trading Strategies (Contextual Application)
+The AI should understand the general intent behind common options strategies to provide tailored feedback on specific contract choices. The feedback should focus on whether the chosen strikes and expirations align with the strategy's typical implementation and the trader's assumed market outlook.
+
+Single-Leg Strategies:
+
+Long Call/Put: Bullish/bearish directional bets. AI should check for appropriate delta, time horizon, IV levels (avoid buying high IV).
+
+Short Call/Put (Naked): Bearish/bullish income generation with theoretically unlimited risk. AI must flag the extreme risk profile and margin requirements.
+
+Multi-Leg (Spread) Strategies:
+
+Covered Call: Selling a call against 100 shares owned. AI should check for appropriate strike (slightly OTM to allow upside, or ATM for higher premium), expiration.
+
+Cash-Secured Put: Selling a put with cash held to buy shares if assigned. AI should check for appropriate strike (typically OTM), expiration.
+
+Vertical Spreads (Debit/Credit): Defined risk/reward strategies.
+
+Bull Call Spread / Bear Put Spread (Debit): Directional bets, buying cheaper options. AI should check for appropriate spread width, strike selection, and IV environment (buying low IV).
+
+Bear Call Spread / Bull Put Spread (Credit): Income generation, selling expensive options. AI should check for appropriate distance of short strike from current price, width, and IV environment (selling high IV).
+
+Iron Condor: Non-directional, income generation. Selling OTM put and call spreads. AI should check for wing width, distance from current price, and high IV environment.
+
+Straddle/Strangle (Long/Short): Volatility plays.
+
+Long Straddle/Strangle: Buying volatility. AI should check for low IV, proximity to earnings/news.
+
+Short Straddle/Strangle: Selling volatility. AI should check for high IV, absence of major catalysts.
+
+Complex Strategies (Briefly Acknowledge): Calendar Spreads, Diagonal Spreads, Butterflies, Condors. The AI should understand these are generally advanced and require precise strike/expiration selection.
+
+7. Qualitative & Advanced Factors for AI Consideration
+Beyond quantitative metrics, the AI should incorporate qualitative assessment:
+
+Trader's Stated Outlook: If the user provides a market outlook (e.g., "I think stock X will rise to $150 by next month"), the AI should evaluate how the chosen contracts align with this outlook, not just the general strategy.
+
+Catalyst Anticipation: Is there a known event (earnings, product launch, legal ruling) before expiration? How does the trade account for the potential volatility?
+
+Liquidity Assessment: Is there sufficient open interest and tight bid-ask spreads for the specific strikes and expirations chosen? Illiquid options lead to wider entry/exit costs.
+
+Earnings Date Proximity: For single-leg options or volatility strategies, proximity to earnings is critical for IV crush implications.
+
+News Flow: Any recent or anticipated news regarding the underlying company or its sector.
+
+Historical Performance (for RAG): While the AI doesn't perform backtesting, it can reference general principles derived from historical options behavior (e.g., "Historically, selling premium during high IV environments has a higher probability of profit, assuming diligent management").
+
+Assignment Risk: For short option positions (especially ITM), the AI should highlight the risk of early assignment and its implications (e.g., losing shares, needing to deliver shares).
+
+Capital Efficiency: For a given risk, is there a more capital-efficient way to implement the same thesis? (e.g., wider vs. narrower spreads).
+
+Path Dependency: Understand that the final profit/loss is not just about the underlying's final price but also the path it takes, especially for options sensitive to Gamma and Theta.
+
+Probabilistic Thinking: Reinforce that options trading is about managing probabilities and risk, not guaranteeing outcomes.
+
+Defined Edge: Encourage the user to articulate their "edge" for taking the trade – what unique insight or statistical advantage do they believe they have?
+
+8. Unique and Specific Expert-Level Considerations (Expanded)
+This section introduces more granular and nuanced factors for superior analysis.
+
+8.1. Order Flow and Market Microstructure
+Understanding the dynamics of how options are traded can provide an edge.
+
+Bid/Ask Skew & Imbalance:
+
+AI Focus: Analyze if there's a consistent leaning of orders towards the bid (more sellers) or the ask (more buyers) for a specific strike/expiration. A large number of contracts consistently trading at the ask might indicate strong buying pressure, even if the price doesn't immediately reflect it.
+
+Expert Insight: Large block trades on the bid (selling) or ask (buying) can signify institutional activity. Look for unusual size.
+
+Dark Pool Activity (Conceptual):
+
+AI Focus: While direct data isn't available, the AI should understand that significant off-exchange volume can impact future price movements without showing up immediately in lit exchange quotes.
+
+Expert Insight: Unexplained price movements with low lit volume might hint at dark pool accumulation/distribution.
+
+Time & Sales Analysis (Conceptual):
+
+AI Focus: The AI should conceptually understand that analyzing individual trades (size, price, aggressor) provides insight into true supply/demand, beyond just bid/ask.
+
+Expert Insight: Frequent small-lot buying could be retail, while large-lot buying/selling often points to smart money.
+
+8.2. Volatility Arbitrage Concepts (for Analytical Depth)
+Even if the AI doesn't trade arbitrage, understanding its principles enhances IV analysis.
+
+Put-Call Parity Relationship:
+
+Formula: C−P=S−Ke 
+−rT
+  (where C=Call, P=Put, S=Stock, K=Strike, r=risk-free rate, T=time to expiration).
+
+AI Focus: Identify if quoted call and put prices for the same strike and expiration deviate significantly from theoretical put-call parity.
+
+Expert Insight: Deviations can indicate mispricing due to liquidity, market microstructure, or temporary imbalances. The AI should flag this as a potential inefficiency or a sign of an illiquid market where theoretical values don't hold perfectly.
+
+Dispersion Trading (Conceptual):
+
+AI Focus: Understand that a strategy might implicitly be betting on the difference between index implied volatility and the implied volatility of its constituent stocks.
+
+Expert Insight: If a trader is buying individual stock options while selling index options (or vice-versa), the AI can comment on the implicit dispersion trade.
+
+8.3. Advanced Option Strategies (Implicit Understanding)
+The AI should be aware of the nuances of less common but powerful strategies.
+
+Ratio Spreads & Backspreads:
+
+AI Focus: Identify when a trader is buying/selling a disproportionate number of contracts at different strikes.
+
+Expert Insight: Recognize if it's a bullish (e.g., long calls at one strike, short more calls at a higher strike) or bearish ratio, and whether it's designed to profit from a move and volatility, or just a large move. Highlight the potential for unlimited risk if not managed.
+
+Calendar and Diagonal Spreads (Theta and Vega Interaction):
+
+AI Focus: Analyze trades involving different expirations but the same (calendar) or different (diagonal) strikes.
+
+Expert Insight: Evaluate how the "long dated" option (buying) will benefit from lower theta decay and potentially higher vega, while the "short dated" option (selling) is subject to rapid theta decay. Critique the expected vol curve for profitability (e.g., if IV is higher for the front month, it helps a calendar spread).
+
+Iron Butterflies:
+
+AI Focus: Recognizes a combination of a bull put spread and a bear call spread where the short strikes are the same (ATM).
+
+Expert Insight: Highlight that this strategy profits from very little movement in the underlying (low gamma, negative vega) and aims to capture maximum theta. It's for pinpoint accuracy on price.
+
+8.4. Psychological & Behavioral Biases
+Acknowledging human tendencies in trading can lead to more empathetic and insightful feedback.
+
+Confirmation Bias:
+
+AI Focus: If the trader's proposed strategy strongly aligns with only bullish or bearish news they've mentioned, the AI can gently suggest considering counter-arguments or alternative scenarios.
+
+Expert Insight: "Your selection appears to heavily favor a bullish outcome. Have you considered potential downside catalysts or unexpected market shifts that might challenge this view?"
+
+Recency Bias:
+
+AI Focus: If the trade seems to be based purely on recent price action or a recent news event, the AI can prompt for a broader historical context.
+
+Expert Insight: "While recent momentum is strong, consider the historical volatility and price ranges of the underlying over a longer period. Is this move sustainable?"
+
+Loss Aversion / Disposition Effect:
+
+AI Focus: (Implicit, if patterns of holding losing trades emerge over time in user's inputs, for future iterations of AI).
+
+Expert Insight: "Ensure your entry and exit plan is pre-defined and not influenced by emotional attachment to a losing position."
+
+Gambler's Fallacy:
+
+AI Focus: If a user expresses intent to double down on a losing option because it's "due" for a bounce.
+
+Expert Insight: "Probabilities in options are independent for each trade. Avoid increasing risk simply because a prior similar trade didn't work out as expected."
+
+8.5. Regulatory and Tax Considerations (High-Level)
+While not a tax advisor, an expert AI should be aware of these broad categories.
+
+Wash Sale Rule (Conceptual):
+
+AI Focus: (If detecting multiple buy/sell/rebuy within 30 days).
+
+Expert Insight: "Be mindful of the wash sale rule if closing a losing position and re-establishing a similar one shortly after, as it can disallow the loss for tax purposes."
+
+Section 1256 Contracts vs. Non-1256:
+
+AI Focus: Differentiate between broad-based index options (e.g., SPX, NDX, RUT), which are typically Section 1256 contracts (60% long-term / 40% short-term capital gains tax treatment), and options on individual stocks/ETFs, which are not.
+
+Expert Insight: "Note that options on major indices often receive more favorable tax treatment. Factor this into your strategy if tax efficiency is a priority."
+
+Assignment & Exercise Tax Implications:
+
+AI Focus: When a short option is assigned or a long option is exercised, it triggers a stock purchase/sale, which has its own tax consequences.
+
+Expert Insight: "Remember that physical assignment or exercise of your options will result in a stock transaction, subject to standard capital gains/losses on the shares acquired/sold."
+
+8.6. Backtesting & Simulation Principles (Conceptual)
+How good strategies are validated conceptually.
+
+Statistical Significance:
+
+AI Focus: Encourage the trader to consider if their perceived "edge" is statistically robust, not just anecdotal.
+
+Expert Insight: "Ensure your trade idea is based on a statistically significant pattern or edge, rather than isolated observations."
+
+Monte Carlo Simulations (Conceptual):
+
+AI Focus: The AI should conceptually understand that complex strategies are often stress-tested using simulations over various market paths.
+
+Expert Insight: "For complex multi-leg strategies, consider how the position would perform under a wide range of simulated market conditions, not just your base case scenario."
+
+8.7. Specific Event-Driven Trading Nuances
+Beyond general earnings, specific events have unique vol dynamics.
+
+FDA Announcements (Biotech):
+
+AI Focus: Recognize biotech tickers and proximity to PDUFA dates or clinical trial results.
+
+Expert Insight: "FDA announcements are binary events. IV will be extremely high pre-announcement and crush dramatically post-announcement, often regardless of the news outcome. Ensure your strategy accounts for this extreme Vega risk."
+
+Analyst Days / Investor Conferences:
+
+AI Focus: These can be mini-catalysts, causing short-term shifts in implied volatility.
+
+Expert Insight: "While less dramatic than earnings, analyst days can lead to increased volatility. If holding short-dated positions, be aware of any scheduled investor events."
+
+Dividend Dates (for Calls):
+
+AI Focus: For calls, proximity to an ex-dividend date can make ITM calls more prone to early exercise if the dividend is significant.
+
+Expert Insight: "If selling deep ITM calls that are about to go ex-dividend, be aware of early assignment risk as the buyer may exercise to capture the dividend."
+
+8.8. Carry and Cost of Carry
+More advanced pricing factors related to holding costs.
+
+Implied Borrow Rate (for Puts):
+
+AI Focus: The cost of carrying a short stock position (e.g., in a synthetic short or during put-call parity deviations) is reflected in put option pricing.
+
+Expert Insight: "For certain highly shorted stocks, the implied borrow rate (reflected in put pricing) can be significant. This impacts the true cost of synthetic positions."
+
+Financing Costs for Long Equity Positions (Implicit):
+
+AI Focus: The interest rate component of options pricing (Rho) reflects the cost of financing the underlying asset.
+
+Expert Insight: "For very long-dated options or synthetic stock positions, the prevailing interest rates become a more material component of your cost of carry."
+
+8.9. Interest Rate Curve Impact
+How different maturities affect pricing.
+
+Yield Curve Shape:
+
+AI Focus: An AI aware of yield curve shape (normal, inverted, flat) can offer insights into the expectations for future interest rates.
+
+Expert Insight: "A rising yield curve might incrementally increase the value of long-dated calls (positive Rho) and decrease the value of long-dated puts (negative Rho)."
+
+8.10. Trade Sizing & Portfolio Allocation (Advanced)
+Moving beyond simple percentages.
+
+Kelly Criterion (Conceptual):
+
+AI Focus: The AI can conceptually reference optimal sizing given estimated edge and probability of success.
+
+Expert Insight: "Consider optimal position sizing methodologies like the Kelly Criterion, which suggests sizing based on your perceived edge and win probability to maximize long-term growth (though it can be aggressive)."
+
+Correlation within Portfolio:
+
+AI Focus: If multiple trades are provided, the AI should understand that highly correlated underlyings do not provide true diversification.
+
+Expert Insight: "Assess the correlation of this underlying with your other active positions. Highly correlated trades can amplify losses if a broad market move goes against your positions."
+
+8.11. Adjustments and Contingency Planning
+What to do when a trade goes wrong or right.
+
+Roll Management (Rolling Up/Down/Out):
+
+AI Focus: The AI should understand that options trades are rarely "set and forget."
+
+Expert Insight: "Have a clear plan for rolling your position if the trade moves against you (e.g., rolling a credit spread out in time or up/down in strike) or if it reaches a profit target early (rolling to reduce risk/lock in profits)."
+
+Broken Wing Butterflies (Conceptual):
+
+AI Focus: Recognize complex adjustment strategies.
+
+Expert Insight: "If adjusting a credit spread that has been breached, consider transforming it into a broken wing butterfly to salvage the position with a defined risk profile."
+
+Max Pain Theory (Conceptual, with Caveats):
+
+AI Focus: While controversial, some traders look at the "max pain" strike price (where the most options contracts expire worthless).
+
+Expert Insight: "Some traders observe 'max pain' as a potential magnet for the underlying price near expiration, but this is a contentious theory and should not be relied upon solely."
+
+12. Principles for AI Feedback Generation (Refined)
+The AI should aim for feedback that is:
+
+Analytical & Quantitative: Backed by Greek analysis, IV assessment, risk-reward ratios, and probability estimates derived from the input.
+
+Contextual: Relates the specific contract choices to the broader market, sector, company-specific context, and even micro-level order flow dynamics.
+
+Risk-Focused & Holistic: Prioritizes identifying and highlighting potential risks (max loss, IV crush, liquidity, assignment, and less obvious risks like interest rate changes or carry costs).
+
+Actionable & Prescriptive (with caveats): Suggests specific adjustments (e.g., "Consider a further OTM strike to reduce risk," "Extend expiration to mitigate theta decay," "Look for higher IV underlyings for premium selling"), but always with a reminder that these are considerations, not guarantees.
+
+Educational & Explanatory: Explains why certain aspects are good or bad, reinforcing options principles and the logic behind advanced concepts.
+
+Strategy-Aligned & Nuanced: Ensures the chosen options contracts logically fit the stated or inferred trading strategy, even when considering advanced variations.
+
+Probabilistic & Pragmatic: Emphasizes that trading outcomes are not certain and are about managing probabilities within real-world market complexities.
+
+Neutral & Objective, yet Opinionated: Avoids overly prescriptive "do this" advice but rather presents considerations and "if-then" scenarios with an expert's informed perspective.
+
+13. Example Feedback Scenarios (Internal AI Guidance - Expanded)
+The AI should simulate internal thought processes like:
+
+"User is selling an OTM credit spread with low IV Rank. Feedback: Highlight the disadvantage of selling cheap premium and suggest waiting for higher IV or considering a debit spread if conviction is strong. Add: 'Given the relatively low IV Rank of XX%, you might find the premium capture for this credit spread to be less efficient than if you waited for a higher volatility environment, or if you consider a more directional debit spread strategy that benefits from a low IV entry.'"
+
+"User is buying a short-dated ATM call before earnings. Feedback: Warn about significant theta decay and potential IV crush post-earnings. Suggest extending expiration or using a vertical spread to define risk/reduce cost. Add: 'The proximity to earnings (next week) suggests this long call faces significant IV crush risk post-announcement. Even if your directional thesis is correct, the dramatic drop in Vega post-earnings could erode a substantial portion of your premium. Consider moving to a longer-dated option to mitigate theta and IV crush, or using a bullish vertical debit spread to reduce your overall cost and define your risk.'"
+
+"User's chosen strikes for an iron condor are very close to the current price. Feedback: Point out the high probability of breach and suggest widening the wings or moving strikes further OTM for higher probability of profit, acknowledging reduced premium. Add: 'Your chosen iron condor strikes are quite tight to the current price. While this maximizes premium capture, it significantly reduces your probability of profit, making the trade highly sensitive to small movements. Consider widening the wings or moving both spreads further OTM to increase your probability of success, acknowledging that this will reduce the premium collected.'"
+
+"User is taking a directional bet with a very low delta OTM option. Feedback: Explain that while cheap, this option has a very low probability of profit and requires a large move in the underlying. Suggest a higher delta option if directional conviction is strong, or a different strategy. Add: 'While the OTM option is cheap, its low delta (e.g., 0.15) indicates a very low statistical probability of expiring in-the-money. This means you need a significant and rapid move in the underlying to profit. If your directional conviction is strong, a higher delta option or a vertical debit spread could offer a better risk-reward profile for your thesis.'"
+
+"User is proposing an undefined risk strategy (e.g., naked put) on a highly volatile, illiquid small-cap stock. Feedback: Strongly warn about the extreme risk of assignment, potential unlimited loss, and difficulties in managing positions due to illiquidity. Suggest defined-risk alternatives. Add: 'Executing a naked put on a highly volatile and illiquid small-cap stock (e.g., Bid/Ask spread > 5%) carries substantial and potentially unlimited risk. Illiquidity will make it difficult and costly to adjust or exit the position. Furthermore, the risk of early assignment is elevated if the option goes deep ITM. I strongly advise considering defined-risk alternatives such as a cash-secured put spread to cap your downside and manage liquidity concerns.'"
+
+"User is trading multiple options on highly correlated tech stocks. Feedback: Suggest diversification. 'While you have individual trades on different tech stocks, be mindful that these assets are often highly correlated. In a broad market downturn, these positions might move in tandem, negating the benefits of diversification. Consider diversifying your portfolio across different sectors or asset classes to reduce concentrated risk.'"
+
+"User is buying calls on a biotech stock just before an FDA announcement. Feedback: Highlight the binary event risk and IV crush. 'Your long call position on [Ticker] is particularly exposed to the upcoming FDA announcement. These events are highly binary, meaning the stock can gap significantly up or down. More critically, the implied volatility is likely to be extremely elevated now and will experience a severe 'IV crush' immediately after the announcement, regardless of the news, eroding your option's value. Ensure you are prepared for this volatility and potential rapid premium decay.' "
+
+14. Disclaimer
+The information contained within this knowledge base is for educational and informational purposes only. It is intended to guide an AI system in providing options trading feedback and does not constitute financial advice, investment recommendations, or an offer to trade any security. Options trading involves substantial risk and is not suitable for all investors. Past performance is not indicative of future results. Always consult with a qualified financial professional before making any investment decisions.
+
